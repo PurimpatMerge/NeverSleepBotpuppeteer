@@ -1,0 +1,112 @@
+const puppeteer = require('puppeteer');
+
+(async () => {
+  const browser = await puppeteer.launch({
+    headless: false, // แสดง browser window
+  });
+
+  const page = await browser.newPage(); // เปิด tab ใหม่
+
+  await page.goto('https://www.425degree.com/'); // เปิดเว็บนี้
+
+  await page.waitForTimeout(3000); //รอ 3 วิให้เว็บโหลด กดยอมรับ cookie
+  await page.waitForSelector('button.amgdprcookie-button.-allow.-save[title="ยอมรับ"][aria-label="ยอมรับ"]');
+  await page.click('button.amgdprcookie-button.-allow.-save[title="ยอมรับ"][aria-label="ยอมรับ"]');
+  console.log("1.Successfully accepted cookie.");
+
+  // เลือนหน้าจอหา item นั้น โดยการเลื่อนลงหา 
+  await page.evaluate(() => {
+    const scrollInterval = setInterval(() => {
+      window.scrollBy(0, 700); // ความเร็วในการเลื่อนลง
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        clearInterval(scrollInterval);
+      }
+    }, 1000); 
+  });
+
+  // ทำการค้นหา ไปด้วย
+  await page.waitForSelector('a[title="Case-Mate Tough Plus Clear with MagSafe เคส iPhone 14 Pro Max"]');
+  await page.click('a[title="Case-Mate Tough Plus Clear with MagSafe เคส iPhone 14 Pro Max"]');
+  console.log("2.Successfully found item.");
+
+  await page.waitForTimeout(3000); //รอ 3 วิให้เว็บโหลด
+  await page.waitForSelector('button[title="Increase"][type="button"][data-role="change_cart_qty"][data-qty="1"]');
+  await page.click('button[title="Increase"][type="button"][data-role="change_cart_qty"][data-qty="1"]');
+  console.log("3.Successfully add item in cart.");
+
+  await page.waitForSelector('button[type="submit"][data-action="buynow"][title="สั่งซื้อสินค้า"]');
+  await page.click('button[type="submit"][data-action="buynow"][title="สั่งซื้อสินค้า"]');
+  console.log("4.Successfully going to payment method.");
+
+
+  await page.waitForTimeout(3000); 
+  await page.waitForSelector('input#customer-email');
+  await page.type('input#customer-email', 'mergeofficial@hotmail.com');
+
+  await page.waitForSelector('input[name="firstname"]');
+  await page.type('input[name="firstname"]', 'Purimpat');
+  
+  await page.waitForSelector('input[name="lastname"]');
+  await page.type('input[name="lastname"]', 'Worakaicharuphak');
+  
+  await page.waitForSelector('input[name="street[0]"]');
+  await page.type('input[name="street[0]"]', '74/1 หมู่ที่2');
+  
+  await page.waitForSelector('input[name="street[0]"]');
+  await page.type('input[name="street[1]"]', '-');
+  
+  await page.waitForSelector('input[name="street[0]"]');
+  await page.type('input[name="street[2]"]', 'กระทิงลาย');
+  
+  await page.waitForSelector('input[name="street[0]"]');
+  await page.type('input[name="street[3]"]', 'หนองปลาไหล');
+  
+  await page.waitForSelector('input[name="city"]');
+  await page.type('input[name="city"]', 'บางละมุง');
+  
+  await page.waitForSelector('select[name="region_id"]');
+  await page.select('select[name="region_id"]', '493');
+  
+  await page.waitForSelector('select[name="country_id"]');
+  await page.select('select[name="country_id"]', 'TH');
+  
+  // Continue filling in other input fields as needed
+  
+  // Submit the form or perform other actions if necessary
+  
+  // await browser.close();
+  
+  await page.waitForSelector('input[name="postcode"]');
+  await page.type('input[name="postcode"]', '20150');
+  
+  await page.waitForSelector('input[name="telephone"]');
+  await page.type('input[name="telephone"]', '0825639991');
+
+  await page.waitForSelector('input[name="vat_id"]');
+  await page.type('input[name="vat_id"]', 'ไม่มี');
+
+  await page.waitForSelector('input[name="company"]');
+  await page.type('input[name="company"]', 'Never Sleep Co.,Ltd.');
+
+  console.log("5.Successfully write down input.");
+  
+  
+//   await page.evaluate(() => {
+//     const emailInput = document.querySelector('input[name="username"]');
+//     if (emailInput) {
+//       emailInput.value = 'mergeofficial@hotmail.com';
+//     } else {
+//       throw new Error('Email input field not found.');
+//     }
+//   });
+//   console.log("5. Successfully entered the email.");
+
+await page.waitForSelector('input#cashondelivery');
+await page.focus('input#cashondelivery');
+await page.keyboard.press('Space');
+  
+
+  //click the
+  
+//   await browser.close();
+})();
