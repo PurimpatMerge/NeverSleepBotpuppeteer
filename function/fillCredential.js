@@ -1,4 +1,5 @@
-async function fillInputFields(page) {
+async function fillCredential(page) {
+await page.waitForTimeout(3000);
 await page.waitForSelector('input#customer-email');
 await page.type('input#customer-email', 'mergeofficial@hotmail.com');
 
@@ -12,7 +13,7 @@ await page.waitForSelector('input[name="street[0]"]');
 await page.type('input[name="street[0]"]', '74/1 หมู่ที่2');
 
 await page.waitForSelector('input[name="street[0]"]');
-await page.type('input[name="street[1]"]', '-');
+await page.type('input[name="street[1]"]', 'ไม่มี');
 
 await page.waitForSelector('input[name="street[0]"]');
 await page.type('input[name="street[2]"]', 'กระทิงลาย');
@@ -43,4 +44,4 @@ await page.type('input[name="company"]', 'Never Sleep Co.,Ltd.');
 
 console.log("5.Successfully write down input.");
 }
-module.exports = fillInputFields;
+module.exports = fillCredential;

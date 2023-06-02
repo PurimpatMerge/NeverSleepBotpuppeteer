@@ -1,0 +1,38 @@
+const puppeteer = require("puppeteer");
+const fillCredential = require("./function/fillCredential");
+const AcceptCookie = require("./function/AcceptCookie");
+const findIphoneCase = require("./function/findSpecificItem");
+
+(async () => {
+  console.time("Total Time"); // Start measuring time
+  
+  const browser = await puppeteer.launch({
+    headless: false, // Show browser window
+  });
+
+  const page = await browser.newPage(); // Open a new tab
+
+  await page.goto("https://www.425degree.com/"); // Open the website
+
+  await AcceptCookie(page); // acceptCookie Function
+
+  // Search for the item
+  await page.waitForSelector('input[name="q"]');
+  await page.focus('input[name="q"]');
+  await page.keyboard.type('Case-Mate Tough Plus Clear with MagSafe เคส iPhone 14 Pro Max');
+  await page.keyboard.press("Enter");
+  
+  await findIphoneCase(page); // Find the iPhone case
+
+ 
+  
+  // Fill input credentials
+  await fillCredential(page);
+
+  await page.waitForSelector("input#cashondelivery");
+  await page.focus("input#cashondelivery");
+  await page.keyboard.press("Space");
+
+  console.log("5. Successfully selected payment method.");
+  console.timeEnd("Total Time"); // End measuring time and display elapsed time
+})();
